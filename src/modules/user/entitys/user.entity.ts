@@ -2,24 +2,24 @@ import { Column, PrimaryGeneratedColumn, Entity } from 'typeorm';
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column()
-    username: string;
+  @Column({ unique: true })
+  username: string;
 
-    @Column()
-    password: string;
+  @Column()
+  password: string;
 
-    @Column()
-    name: string;
+  @Column()
+  name: string;
 
-    @Column()
-    email: string;
+  @Column({ unique: true })
+  email: string;
 
-    @Column()
-    accessLevel: number;
+  @Column()
+  accessLevel: number;
 
-    @Column()
-    isChecked: boolean;
+  @Column({ default: false })
+  isChecked: boolean;
 }
