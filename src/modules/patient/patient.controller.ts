@@ -3,10 +3,8 @@ import { PatientService } from './patient.service';
 import { Patient } from './entitys/patient.entity';
 import { InsertResult } from 'typeorm';
 import { MedicalRecord } from './entitys/medical-record.entity';
-import { JwtGuards } from '../../guards/jwt.guards';
 
 @Controller('patient')
-@UseGuards(JwtGuards)
 export class PatientController {
   constructor(private readonly patientService: PatientService) {}
 

@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entitys/user.entity';
 import { Repository, InsertResult } from 'typeorm';
 import { sign } from 'jsonwebtoken';
+import { LoginInterface } from './interfaces/login.interface';
 
 @Injectable()
 export class UserService {
@@ -14,9 +15,9 @@ export class UserService {
     return await this.userRepository.insert(user);
   }
 
-  async login(username: string, password: string): Promise<User> {
+  async login(loginData: LoginInterface): Promise<User> {
     const user: User = await this.userRepository.findOne({
-      where: { username: username, password: password },
+      where: { username: loginData.username, password: loginData.password },
     });
     return user;
   }

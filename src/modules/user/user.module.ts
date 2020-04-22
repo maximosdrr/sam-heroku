@@ -8,5 +8,6 @@ import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
   providers: [UserService],
   controllers: [UserController],
   imports: [TypeOrmModule.forFeature([User])],
+  exports: [UserService],
 })
 export class UserModule {}

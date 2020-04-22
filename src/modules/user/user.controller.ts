@@ -3,7 +3,6 @@ import { UserService } from './user.service';
 import { User } from './entitys/user.entity';
 import { InsertResult } from 'typeorm';
 import { LoginInterface } from './interfaces/login.interface';
-import { JwtGuards } from 'src/guards/jwt.guards';
 
 @Controller('user')
 export class UserController {
@@ -16,10 +15,7 @@ export class UserController {
 
   @Post('login')
   async login(@Body() loginData: LoginInterface): Promise<object> {
-    const user: User = await this.userService.login(
-      loginData.username,
-      loginData.password,
-    );
+    const user: User = await this.userService.login(loginData);
     return this.userService.getToken(user);
   }
 }
