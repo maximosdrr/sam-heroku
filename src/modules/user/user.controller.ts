@@ -12,10 +12,4 @@ export class UserController {
   insert(@Body() user: User): Promise<InsertResult> {
     return this.userService.insert(user);
   }
-
-  @Post('login')
-  async login(@Body() loginData: LoginInterface): Promise<object> {
-    const user: User = await this.userService.login(loginData);
-    return this.userService.getToken(user);
-  }
 }
