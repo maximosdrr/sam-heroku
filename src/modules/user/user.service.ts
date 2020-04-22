@@ -1,9 +1,10 @@
-import { Injectable, forwardRef } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entitys/user.entity';
 import { Repository, InsertResult } from 'typeorm';
-import { sign } from 'jsonwebtoken';
 import { LoginInterface } from './interfaces/login.interface';
+import { UpdateUserData } from './interfaces/user-update-data.interface';
+import { SqlErro } from './interfaces/sql-erro.interface';
 
 @Injectable()
 export class UserService {
@@ -11,8 +12,17 @@ export class UserService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
-  async insert(user: User): Promise<InsertResult> {
-    return await this.userRepository.insert(user);
+  onSqlErro(erro) {
+    const sqlErro: SqlErro = {
+      name: erro.name,
+      code: erro.code,
+      errno: erro.errno,
+    };
+    return sqlErro;
+  }
+
+  async insert(user: User): Promise<any> {
+    return await this.userRepository.insert(user).catch(this.onSqlErro);
   }
 
   async login(loginData: LoginInterface): Promise<User> {
@@ -22,12 +32,14 @@ export class UserService {
     return user;
   }
 
-  async getToken(user: User): Promise<object> {
-    if (!user) return { auth: false, token: null };
-    const secret: string = process.env.JWTSECRET;
-    const { id } = user;
-    const token: string = sign({ id }, secret, { expiresIn: 3000000 });
-
-    return { auth: true, token: token };
+  async update(userUpdateData: UpdateUserData): Promise<any> {
+    const user: User = await this.userRepository.findOne(userUpdateData.id);
+    user.name = userUpdateData.name;
+    return await this.userRepository.save(user).catch(this.onSqlErro);
   }
+
+  async delete(id: string): Promise<any> {
+    return await this.userRepository.delete(id).catch(this.onSqlErro);
+  }
+  // async updateUser();
 }
