@@ -23,9 +23,12 @@ export class PatientService {
   }
 
   async findPatientById(id: string): Promise<Patient> {
-    return await this.patientRepository.findOne({
+    return await this.patientRepository.findOne(id, {
       join: {
-        alias: 'medical_record',
+        alias: 'patient',
+        innerJoinAndSelect: {
+          id: 'patient.medicalRecord',
+        },
       },
     });
   }

@@ -1,18 +1,27 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { UserService } from '../user.service';
+import { User } from '../entitys/user.entity';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Controller } from '@nestjs/common/interfaces';
 import { UserController } from '../user.controller';
 
 describe('User Controller', () => {
-    let controller: UserController;
+  let controller: Controller;
 
-    beforeEach(async () => {
-        const module: TestingModule = await Test.createTestingModule({
-            controllers: [UserController],
-        }).compile();
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        UserService,
+        { provide: getRepositoryToken(User), useClass: Repository },
+      ],
+      controllers: [UserController],
+    }).compile();
 
-        controller = module.get<UserController>(UserController);
-    });
+    controller = module.get<Controller>(UserController);
+  });
 
-    it('should be defined', () => {
-        expect(controller).toBeDefined();
-    });
+  it('Verify if controller is defined', () => {
+    expect(controller).toBeDefined();
+  });
 });

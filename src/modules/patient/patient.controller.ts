@@ -1,10 +1,12 @@
-import { Controller, Body, Post } from '@nestjs/common';
+import { Controller, Body, Post, Get, Query, UseGuards } from '@nestjs/common';
 import { PatientService } from './patient.service';
 import { Patient } from './entitys/patient.entity';
 import { InsertResult } from 'typeorm';
 import { MedicalRecord } from './entitys/medical-record.entity';
+import { JwtGuards } from '../../guards/jwt.guards';
 
 @Controller('patient')
+@UseGuards(JwtGuards)
 export class PatientController {
   constructor(private readonly patientService: PatientService) {}
 
@@ -18,5 +20,10 @@ export class PatientController {
     @Body() medicalRecord: MedicalRecord,
   ): Promise<InsertResult> {
     return this.patientService.insertMedicalRecord(medicalRecord);
+  }
+
+  @Get('findOneById')
+  findOneById(@Query('id') id: string): Promise<Patient> {
+    return this.patientService.findPatientById(id);
   }
 }
