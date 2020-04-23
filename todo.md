@@ -2,10 +2,10 @@
 
   - [ ] User
 
-    - [] Check email
-    - [] Update email
-    - [] Change password
-    - [] Change access level
+    - [ ] Check email
+    - [ ] Update email
+    - [ ] Change password
+    - [ ] Change access level
 
   - [ ] Query
 
