@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entitys/user.entity';
-import { Repository, InsertResult } from 'typeorm';
-import { LoginInterface } from './interfaces/login.interface';
+import { Repository } from 'typeorm';
+import { LoginInterface } from '../../shared/interfaces/login.interface';
 import { UpdateUserData } from './interfaces/user-update-data.interface';
-import { SqlErro } from './interfaces/sql-erro.interface';
+import { SqlErro } from '../../shared/interfaces/sql-erro.interface';
 
 @Injectable()
 export class UserService {

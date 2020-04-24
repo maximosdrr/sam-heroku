@@ -5,12 +5,12 @@ export class Doctor {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: false })
   cmr: string;
 
   @Column()
   specialty: string;
 
-  @Column()
+  @Column({ nullable: false })
   name: string;
 }

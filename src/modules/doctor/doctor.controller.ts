@@ -7,6 +7,8 @@ import {
   Delete,
   Query,
   Get,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { DoctorService } from './doctor.service';
 import { Doctor } from './entitys/doctor.entity';
@@ -34,7 +36,7 @@ export class DoctorController {
   }
 
   @Get('findOneById')
-  findOneById(@Query('id') id: string): Promise<any> {
+  async findOneById(@Query('id') id: string): Promise<Doctor> {
     return this.doctorService.findOneById(id);
   }
 
