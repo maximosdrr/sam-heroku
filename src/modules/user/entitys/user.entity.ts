@@ -1,4 +1,5 @@
-import { Column, PrimaryGeneratedColumn, Entity } from 'typeorm';
+import { Column, PrimaryGeneratedColumn, Entity, OneToMany } from 'typeorm';
+import { Appointment } from 'src/modules/appointment/entitys/appointment.entity';
 
 @Entity()
 export class User {
@@ -22,4 +23,10 @@ export class User {
 
   @Column({ default: false })
   isChecked: boolean;
+
+  @OneToMany(
+    type => Appointment,
+    appointment => appointment.user,
+  )
+  appointment: Appointment;
 }

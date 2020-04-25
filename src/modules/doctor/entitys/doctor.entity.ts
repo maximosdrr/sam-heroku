@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { type } from 'os';
+import { Appointment } from 'src/modules/appointment/entitys/appointment.entity';
 
 @Entity()
 export class Doctor {
@@ -13,4 +15,10 @@ export class Doctor {
 
   @Column({ nullable: false })
   name: string;
+
+  @OneToMany(
+    type => Appointment,
+    appointment => appointment.doctor,
+  )
+  appointment: Appointment;
 }
