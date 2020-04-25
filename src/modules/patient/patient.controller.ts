@@ -44,6 +44,11 @@ export class PatientController {
     return this.patientService.findAllPatients(limit, page);
   }
 
+  @Get('findPatientByName')
+  findPatientByName(@Query('name') name: string) {
+    return this.patientService.findPatientByName(name);
+  }
+
   @Delete('delete')
   delete(@Query('id') id: string): Promise<DeleteResult> {
     return this.patientService.deletePatient(id);

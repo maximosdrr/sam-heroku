@@ -16,7 +16,18 @@ export class DoctorService {
   }
 
   async findOneById(id: string): Promise<Doctor> {
-    const doctor: Doctor = await this.doctorRepository.findOne(id);
+    const doctor: Doctor = await this.doctorRepository
+      .findOne(id, {
+        join: {
+          alias: 'doctor',
+          innerJoinAndSelect: {
+            appointment: 'doctor.appointment',
+          },
+        },
+      })
+      .catch(erro => {
+        throw new HttpException(erro, HttpStatus.BAD_REQUEST);
+      });
     if (!doctor)
       throw new HttpException('Doctor not found', HttpStatus.NOT_FOUND);
 
@@ -60,5 +71,51 @@ export class DoctorService {
     return this.doctorRepository.save(doctorToUpdate).catch(erro => {
       throw new HttpException(erro, HttpStatus.BAD_REQUEST);
     });
+  }
+
+  async findDoctorByName(name: string): Promise<Doctor> {
+    const doctor = await this.doctorRepository
+      .findOne({
+        join: {
+          alias: 'doctor',
+          innerJoinAndSelect: {
+            appointment: 'doctor.appointment',
+          },
+        },
+        where: {
+          name: name,
+        },
+      })
+      .catch(erro => {
+        throw new HttpException(erro, HttpStatus.BAD_REQUEST);
+      });
+
+    if (!doctor)
+      throw new HttpException('Doctor not found', HttpStatus.NOT_FOUND);
+
+    return doctor;
+  }
+
+  async findDoctorByCmr(cmr: string): Promise<Doctor> {
+    const doctor = await this.doctorRepository
+      .findOne({
+        join: {
+          alias: 'doctor',
+          innerJoinAndSelect: {
+            appointment: 'doctor.appointment',
+          },
+        },
+        where: {
+          cmr: cmr,
+        },
+      })
+      .catch(erro => {
+        throw new HttpException(erro, HttpStatus.BAD_REQUEST);
+      });
+
+    if (!doctor)
+      throw new HttpException('Doctor not found', HttpStatus.NOT_FOUND);
+
+    return doctor;
   }
 }

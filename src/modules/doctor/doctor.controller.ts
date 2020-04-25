@@ -47,4 +47,14 @@ export class DoctorController {
   ): Promise<Doctor[]> {
     return this.doctorService.findAll(limit, page);
   }
+
+  @Get('findDoctorByName')
+  findDoctorByName(@Query('name') name: string): Promise<Doctor> {
+    return this.doctorService.findDoctorByName(name);
+  }
+
+  @Get('findDoctorByCmr')
+  findDoctorByCmr(@Query('cmr') cmr: string): Promise<Doctor> {
+    return this.doctorService.findDoctorByCmr(cmr);
+  }
 }

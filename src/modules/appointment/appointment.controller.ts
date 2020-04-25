@@ -58,4 +58,9 @@ export class AppointmentController {
   update(@Body() appointment): Promise<Appointment> {
     return this.appointmentService.update(appointment);
   }
+
+  @Get('findAppointmentByDate')
+  findAppointmentByDate(date: Date): Promise<Appointment> {
+    return this.appointmentService.findAppointmentByDate(date);
+  }
 }

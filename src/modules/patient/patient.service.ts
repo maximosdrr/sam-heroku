@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Patient } from './entitys/patient.entity';
 import { Repository, InsertResult, DeleteResult } from 'typeorm';
 import { MedicalRecord } from './entitys/medical-record.entity';
-import { HttpExceptionFilter } from 'src/shared/http-exception/filter';
 
 @Injectable()
 export class PatientService {
@@ -133,5 +132,29 @@ export class PatientService {
       .catch(erro => {
         throw new HttpException(erro, HttpStatus.BAD_REQUEST);
       });
+  }
+
+  async findPatientByName(name: string): Promise<Patient> {
+    const patient: Patient = await this.patientRepository
+      .findOne({
+        join: {
+          alias: 'patient',
+          innerJoinAndSelect: {
+            medicalRecord: 'patient.medicalRecord',
+            appointments: 'patient.appointment',
+          },
+        },
+        where: {
+          name: name,
+        },
+      })
+      .catch(erro => {
+        throw new HttpException(erro, HttpStatus.BAD_REQUEST);
+      });
+
+    if (!patient)
+      throw new HttpException('Patient not found', HttpStatus.NOT_FOUND);
+
+    return patient;
   }
 }

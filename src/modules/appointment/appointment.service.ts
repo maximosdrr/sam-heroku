@@ -84,5 +84,27 @@ export class AppointmentService {
     return this.appoitmentRepository.save(appointmentToUpdate);
   }
 
-  async;
+  async findAppointmentByDate(date: Date): Promise<Appointment> {
+    const appointment: Appointment = await this.appoitmentRepository
+      .findOne({
+        join: {
+          alias: 'appointment',
+          innerJoinAndSelect: {
+            doctor: 'appointment.doctor',
+            patient: 'appointment.patient',
+          },
+        },
+        where: {
+          date: date,
+        },
+      })
+      .catch(erro => {
+        throw new HttpException(erro, HttpStatus.BAD_REQUEST);
+      });
+
+    if (!appointment)
+      throw new HttpException('Appointment not found', HttpStatus.NOT_FOUND);
+
+    return appointment;
+  }
 }
