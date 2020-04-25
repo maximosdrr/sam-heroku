@@ -6,13 +6,16 @@ export class Patient {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ nullable: false })
+  name: string;
+
+  @Column({ nullable: false })
   healthInsurance: string;
 
   @Column({ unique: true })
   telephone: string;
 
-  @Column()
+  @Column({ nullable: false })
   birthday: string;
 
   @OneToMany(

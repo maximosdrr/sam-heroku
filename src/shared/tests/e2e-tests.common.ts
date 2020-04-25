@@ -74,7 +74,7 @@ export class CommonTests {
       .send(invalidData)
       .expect(HttpStatus.BAD_REQUEST)
       .expect(({ body }) => {
-        expect(body.message).toBeDefined();
+        expect(body.erro).toBeDefined();
         expect(HttpStatus.BAD_REQUEST);
       });
   }
@@ -126,7 +126,7 @@ export class CommonTests {
       .get(`/${this.route}/findOneById/?id=someInvalidId`)
       .set('Authorization', `Bearer ${validAuthToken}`)
       .expect(({ body }) => {
-        expect(body.message).toBeDefined();
+        expect(body.erro.message).toBeDefined();
         expect(HttpStatus.NOT_FOUND);
       });
   }
@@ -148,7 +148,7 @@ export class CommonTests {
       .get(`/${this.route}/findAll`)
       .set('Authorization', `Bearer ${validAuthToken}`)
       .expect(({ body }) => {
-        expect(body.message).toBeDefined();
+        expect(body.erro).toBeDefined();
         expect(HttpStatus.BAD_REQUEST);
       });
   }
@@ -183,7 +183,8 @@ export class CommonTests {
       .set('Authorization', `Bearer ${validAuthToken}`)
       .send(data)
       .expect(({ body }) => {
-        expect(body.message).toBeDefined();
+        console.log(body);
+        expect(body.erro).toBeDefined();
         expect(HttpStatus.NOT_FOUND);
       });
   }

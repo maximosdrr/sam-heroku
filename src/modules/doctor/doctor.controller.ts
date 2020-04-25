@@ -7,16 +7,16 @@ import {
   Delete,
   Query,
   Get,
-  HttpException,
-  HttpStatus,
+  UseFilters,
 } from '@nestjs/common';
 import { DoctorService } from './doctor.service';
 import { Doctor } from './entitys/doctor.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { DoctorUpdateData } from './interfaces/doctor-update-data.interface';
+import { HttpExceptionFilter } from 'src/shared/http-exception/filter';
 
 @Controller('doctor')
 @UseGuards(JwtAuthGuard)
+@UseFilters(HttpExceptionFilter)
 export class DoctorController {
   constructor(private readonly doctorService: DoctorService) {}
 
@@ -26,7 +26,7 @@ export class DoctorController {
   }
 
   @Put('update')
-  update(@Body() doctor: DoctorUpdateData): Promise<any> {
+  update(@Body() doctor: Doctor): Promise<Doctor> {
     return this.doctorService.update(doctor);
   }
 
@@ -43,8 +43,8 @@ export class DoctorController {
   @Get('findAll')
   findAll(
     @Query('limit') limit: number,
-    @Query('page') index: number,
-  ): Promise<any> {
-    return this.doctorService.findAll(limit, index);
+    @Query('page') page: number,
+  ): Promise<Doctor[]> {
+    return this.doctorService.findAll(limit, page);
   }
 }

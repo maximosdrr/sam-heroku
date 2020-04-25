@@ -1,10 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  HttpStatus,
+  HttpException,
+  UseFilters,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entitys/user.entity';
-import { Repository } from 'typeorm';
+import { Repository, DeleteResult } from 'typeorm';
 import { LoginInterface } from '../../shared/interfaces/login.interface';
 import { UpdateUserData } from './interfaces/user-update-data.interface';
 import { SqlErro } from '../../shared/interfaces/sql-erro.interface';
+import { HttpExceptionFilter } from 'src/shared/http-exception/filter';
 
 @Injectable()
 export class UserService {
@@ -12,17 +18,10 @@ export class UserService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
-  onSqlErro(erro) {
-    const sqlErro: SqlErro = {
-      name: erro.name,
-      code: erro.code,
-      errno: erro.errno,
-    };
-    return sqlErro;
-  }
-
   async insert(user: User): Promise<any> {
-    return await this.userRepository.insert(user).catch(this.onSqlErro);
+    return await this.userRepository.insert(user).catch(erro => {
+      throw new HttpException(erro, HttpStatus.BAD_REQUEST);
+    });
   }
 
   async login(loginData: LoginInterface): Promise<User> {
@@ -32,14 +31,18 @@ export class UserService {
     return user;
   }
 
-  async update(userUpdateData: UpdateUserData): Promise<any> {
-    const user: User = await this.userRepository.findOne(userUpdateData.id);
-    user.name = userUpdateData.name;
-    return await this.userRepository.save(user).catch(this.onSqlErro);
+  async update(user: UpdateUserData): Promise<User> {
+    const userToUpdate: User = await this.userRepository.findOne(user.id);
+    if (!userToUpdate)
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    user.name = user.name;
+    return await this.userRepository.save(user).catch();
   }
 
-  async delete(id: string): Promise<any> {
-    return await this.userRepository.delete(id).catch(this.onSqlErro);
+  async delete(id: string): Promise<DeleteResult> {
+    return await this.userRepository.delete(id).catch(erro => {
+      throw new HttpException(erro, HttpStatus.BAD_REQUEST);
+    });
   }
   // async updateUser();
 }

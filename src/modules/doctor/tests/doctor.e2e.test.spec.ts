@@ -7,18 +7,12 @@ import { Repository } from 'typeorm/repository/Repository';
 import { DoctorService } from '../../doctor/doctor.service';
 import { User } from '../../user/entitys/user.entity';
 import { UserService } from '../../user/user.service';
-import { CreateDoctorTests } from './common-tests/doctor.test.create';
-import { DeleteDoctorTests } from './common-tests/doctor.test.delete';
 import { CommonTests } from '../../../shared/tests/e2e-tests.common';
-import { FindDoctorTests } from './common-tests/doctor.test.find';
-import { UpdateDoctorTests } from './common-tests/doctor.test.update';
+import { DoctorTests } from './common-tests/doctor-test';
 
 describe('Doctor Controller E2E Testing', () => {
   const common = new CommonTests('same');
-  const createTests = new CreateDoctorTests();
-  const deleteTests = new DeleteDoctorTests();
-  const findTests = new FindDoctorTests();
-  const updateTest = new UpdateDoctorTests();
+  const doctorTests = new DoctorTests();
 
   let validAuthToken: string;
   let doctorRepository: Repository<Doctor>;
@@ -47,47 +41,47 @@ describe('Doctor Controller E2E Testing', () => {
 
   it('Create doctor using valid data', () => {
     //IF ALL TESTS PASS THIS DOCTOR WILL BE DELETED
-    return createTests.createDoctorUsingValidData(validAuthToken);
+    return doctorTests.createDoctorUsingValidData(validAuthToken);
   });
 
   it('Create doctor using invalid data', () => {
-    return createTests.createDoctorUsingInvalidData(validAuthToken);
+    return doctorTests.createDoctorUsingInvalidData(validAuthToken);
   });
 
   it('Create doctor using duplicated CMR', () => {
     //IF YOUR RUNING THIS TEST FOR FIRST TIME ERRO AS EXPECTED BECAUSE NO DATA HAS PROVIDED
-    return createTests.createADoctorUsingDuplicateCmr(validAuthToken);
+    return doctorTests.createADoctorUsingDuplicateCmr(validAuthToken);
   });
 
   it('Delete doctor using valid ID', () => {
-    return deleteTests.deleteDoctorUsingValidId(validAuthToken);
+    return doctorTests.deleteDoctorUsingValidId(validAuthToken);
   });
 
   it('Delete doctor using invalid ID', () => {
-    return deleteTests.deleteDoctorUsingInvalidId(validAuthToken);
+    return doctorTests.deleteDoctorUsingInvalidId(validAuthToken);
   });
 
   it('Find doctor using valid ID', () => {
-    return findTests.validFindDoctorById(validAuthToken);
+    return doctorTests.validFindDoctorById(validAuthToken);
   });
 
   it('Find doctor using invalid ID', () => {
-    return findTests.invalidFindDoctorById(validAuthToken);
+    return doctorTests.invalidFindDoctorById(validAuthToken);
   });
 
   it('Find all doctors', () => {
-    return findTests.validFindAllDoctors(validAuthToken);
+    return doctorTests.validFindAllDoctors(validAuthToken);
   });
 
   it('Invalid find all doctors', () => {
-    return findTests.invalidFindAllDoctors(validAuthToken);
+    return doctorTests.invalidFindAllDoctors(validAuthToken);
   });
 
   it('Valid update doctor', () => {
-    return updateTest.validUpdateDoctor(validAuthToken);
+    return doctorTests.validUpdateDoctor(validAuthToken);
   });
 
   it('Invalid id to update some doctor', () => {
-    return updateTest.invalidDoctorIdUpdate(validAuthToken);
+    return doctorTests.invalidDoctorIdUpdate(validAuthToken);
   });
 });

@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Doctor } from './entitys/doctor.entity';
 import { Repository } from 'typeorm';
 import { SqlErro } from '../../shared/interfaces/sql-erro.interface';
-import { DoctorUpdateData } from './interfaces/doctor-update-data.interface';
 
 @Injectable()
 export class DoctorService {
@@ -11,21 +10,9 @@ export class DoctorService {
     @InjectRepository(Doctor) private doctorRepository: Repository<Doctor>,
   ) {}
 
-  onSqlErro(erro) {
-    const sqlErro: SqlErro = {
-      name: erro.name,
-      code: erro.code,
-      errno: erro.errno,
-    };
-    return sqlErro;
-  }
-
   async insert(doctor: Doctor): Promise<any> {
     return this.doctorRepository.insert(doctor).catch(erro => {
-      throw new HttpException(
-        'The insertion data contains errors, it was not possible to add',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException(erro, HttpStatus.BAD_REQUEST);
     });
   }
 
@@ -37,8 +24,8 @@ export class DoctorService {
     return doctor;
   }
 
-  async findAll(limit: number, index: number): Promise<any> {
-    if (!limit || !index)
+  async findAll(limit: number, page: number): Promise<any> {
+    if (!limit || !page)
       throw new HttpException(
         'Limit or index undefined',
         HttpStatus.BAD_REQUEST,
@@ -46,35 +33,33 @@ export class DoctorService {
     return this.doctorRepository
       .find({
         take: limit,
-        skip: index,
+        skip: page,
       })
       .catch(erro => {
-        throw new HttpException(
-          'Internal Server Erro',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
+        throw new HttpException(erro, HttpStatus.BAD_REQUEST);
       });
   }
 
   async delete(id: string): Promise<any> {
-    return this.doctorRepository.delete(id);
+    return this.doctorRepository.delete(id).catch(erro => {
+      throw new HttpException(erro, HttpStatus.BAD_REQUEST);
+    });
   }
 
-  async update(doctor: DoctorUpdateData): Promise<any> {
-    const doctorToUpdate: Doctor = await this.doctorRepository.findOne(
-      doctor.id,
-    );
+  async update(doctor: Doctor): Promise<any> {
+    const doctorToUpdate: Doctor = await this.doctorRepository
+      .findOne(doctor.id)
+      .catch(erro => {
+        throw new HttpException(erro, HttpStatus.BAD_REQUEST);
+      });
     if (!doctorToUpdate) {
-      throw new HttpException(
-        'The doctor with that id was not found',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('Doctor not found', HttpStatus.NOT_FOUND);
     }
     doctorToUpdate.cmr = doctor.cmr;
     doctorToUpdate.name = doctor.name;
     doctorToUpdate.specialty = doctor.specialty;
     return this.doctorRepository.save(doctorToUpdate).catch(erro => {
-      throw new HttpException('An error has occured', HttpStatus.BAD_REQUEST);
+      throw new HttpException(erro, HttpStatus.BAD_REQUEST);
     });
   }
 }

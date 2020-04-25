@@ -9,10 +9,10 @@ export class MedicalRecord {
   @ManyToOne(
     type => Patient,
     p => p.medicalRecord,
-    { onDelete: 'CASCADE' },
+    { onDelete: 'CASCADE', nullable: false },
   )
   patient: Patient;
 
   @Column({ type: 'longtext', default: 'Sem dados até o momento' })
-  descrition: string;
+  description: string;
 }

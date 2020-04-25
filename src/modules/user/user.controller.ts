@@ -6,6 +6,7 @@ import {
   Request,
   Put,
   Delete,
+  UseFilters,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './entitys/user.entity';
@@ -14,8 +15,10 @@ import {
   UpdateUserData,
   UserUpdatedResponse,
 } from './interfaces/user-update-data.interface';
+import { HttpExceptionFilter } from '../../shared/http-exception/filter';
 
 @Controller('user')
+@UseFilters(HttpExceptionFilter)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
