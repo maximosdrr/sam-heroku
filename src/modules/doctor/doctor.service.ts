@@ -2,7 +2,6 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Doctor } from './entitys/doctor.entity';
 import { Repository } from 'typeorm';
-import { SqlErro } from '../../shared/interfaces/sql-erro.interface';
 
 @Injectable()
 export class DoctorService {

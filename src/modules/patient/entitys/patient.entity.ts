@@ -17,7 +17,7 @@ export class Patient {
   telephone: string;
 
   @Column({ nullable: false })
-  birthday: string;
+  birthday: Date;
 
   @OneToMany(
     type => MedicalRecord,

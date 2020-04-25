@@ -1,16 +1,9 @@
-import {
-  Injectable,
-  HttpStatus,
-  HttpException,
-  UseFilters,
-} from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entitys/user.entity';
 import { Repository, DeleteResult } from 'typeorm';
 import { LoginInterface } from '../../shared/interfaces/login.interface';
 import { UpdateUserData } from './interfaces/user-update-data.interface';
-import { SqlErro } from '../../shared/interfaces/sql-erro.interface';
-import { HttpExceptionFilter } from 'src/shared/http-exception/filter';
 
 @Injectable()
 export class UserService {
