@@ -33,7 +33,7 @@ export class PatientService {
       .findOne(id, {
         join: {
           alias: 'patient',
-          innerJoinAndSelect: {
+          leftJoinAndSelect: {
             id: 'patient.medicalRecord',
           },
         },
@@ -60,7 +60,7 @@ export class PatientService {
         skip: page,
         join: {
           alias: 'patient',
-          innerJoinAndSelect: {
+          leftJoinAndSelect: {
             id: 'patient.medicalRecord',
           },
         },
@@ -139,7 +139,7 @@ export class PatientService {
       .findOne({
         join: {
           alias: 'patient',
-          innerJoinAndSelect: {
+          leftJoinAndSelect: {
             medicalRecord: 'patient.medicalRecord',
             appointments: 'patient.appointment',
           },

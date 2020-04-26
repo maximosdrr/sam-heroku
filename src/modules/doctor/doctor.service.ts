@@ -20,7 +20,7 @@ export class DoctorService {
       .findOne(id, {
         join: {
           alias: 'doctor',
-          innerJoinAndSelect: {
+          leftJoinAndSelect: {
             appointment: 'doctor.appointment',
           },
         },
@@ -78,7 +78,7 @@ export class DoctorService {
       .findOne({
         join: {
           alias: 'doctor',
-          innerJoinAndSelect: {
+          leftJoinAndSelect: {
             appointment: 'doctor.appointment',
           },
         },
@@ -101,7 +101,7 @@ export class DoctorService {
       .findOne({
         join: {
           alias: 'doctor',
-          innerJoinAndSelect: {
+          leftJoinAndSelect: {
             appointment: 'doctor.appointment',
           },
         },
