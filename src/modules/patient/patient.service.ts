@@ -34,7 +34,8 @@ export class PatientService {
         join: {
           alias: 'patient',
           leftJoinAndSelect: {
-            id: 'patient.medicalRecord',
+            medicalRecord: 'patient.medicalRecord',
+            appointment: 'patient.appointment',
           },
         },
       })
@@ -61,7 +62,8 @@ export class PatientService {
         join: {
           alias: 'patient',
           leftJoinAndSelect: {
-            id: 'patient.medicalRecord',
+            medicalRecord: 'patient.medicalRecord',
+            appointment: 'patient.appointment',
           },
         },
       })
