@@ -1,13 +1,15 @@
-import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entitys/user.entity';
-import { Repository, DeleteResult } from 'typeorm';
+import { Repository, DeleteResult, InsertResult } from 'typeorm';
 import { LoginInterface } from '../../shared/interfaces/login.interface';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
+    @Inject(MailService) private mailService: MailService,
   ) {}
 
   async insert(user: User): Promise<any> {
@@ -76,5 +78,18 @@ export class UserService {
     user.isChecked = false;
     return this.userRepository.save(user);
   }
+
+  async confirmationEmail(id: string): Promise<User> {
+    const user: User = await this.userRepository.findOne(id).catch(erro => {
+      throw new HttpException(erro, HttpStatus.BAD_REQUEST);
+    });
+
+    if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+
+    user.isChecked = true;
+
+    return this.userRepository.save(user);
+  }
+
   // async updateUser();
 }

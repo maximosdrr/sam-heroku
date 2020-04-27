@@ -7,22 +7,35 @@ import {
   Put,
   Delete,
   UseFilters,
+  Get,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './entitys/user.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 import { HttpExceptionFilter } from '../../shared/http-exception/filter';
-import { DeleteResult } from 'typeorm';
+import { DeleteResult, InsertResult } from 'typeorm';
+import { MailService } from 'src/mail/mail.service';
 
 @Controller('user')
 @UseFilters(HttpExceptionFilter)
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly mailService: MailService,
+  ) {}
 
   @Post('insert')
-  insert(@Body() user: User): Promise<any> {
-    return this.userService.insert(user);
+  async insert(@Body() user: User): Promise<any> {
+    const insertResult: InsertResult = await this.userService.insert(user);
+    const userId = insertResult.identifiers[0].id;
+    const mailResult = await this.mailService.sendConfirmationEmail(
+      user.email,
+      userId,
+    );
+
+    return { insertResult, ...mailResult };
   }
 
   @Put('update')
@@ -72,5 +85,12 @@ export class UserController {
       email: user.email,
       status: 'Email changed',
     };
+  }
+
+  @Get('confirmationEmail')
+  async confirmationEmail(@Query('id') id: string) {
+    const user: User = await this.userService.confirmationEmail(id);
+
+    return `<h1>Obrigado: ${user.name} seu email foi confirmado com sucesso</h1>`;
   }
 }
