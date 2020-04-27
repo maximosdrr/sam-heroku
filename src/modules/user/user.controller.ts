@@ -16,7 +16,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 import { HttpExceptionFilter } from '../../shared/http-exception/filter';
 import { DeleteResult, InsertResult } from 'typeorm';
-import { MailService } from 'src/mail/mail.service';
+import { MailService } from '../../mail/mail.service';
 
 @Controller('user')
 @UseFilters(HttpExceptionFilter)

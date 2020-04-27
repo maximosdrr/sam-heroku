@@ -1,15 +1,13 @@
 import { Injectable, HttpStatus, HttpException, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entitys/user.entity';
-import { Repository, DeleteResult, InsertResult } from 'typeorm';
+import { Repository, DeleteResult } from 'typeorm';
 import { LoginInterface } from '../../shared/interfaces/login.interface';
-import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
-    @Inject(MailService) private mailService: MailService,
   ) {}
 
   async insert(user: User): Promise<any> {
