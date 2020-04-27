@@ -76,5 +76,5 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
   
   
   ## Username and password sam email
-  sam_mailer@gmail.com
+  hephaestus.sam.mailer
   jH62mg21-dr
