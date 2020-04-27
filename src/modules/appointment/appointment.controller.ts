@@ -13,7 +13,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { InsertResult, DeleteResult } from 'typeorm';
-import { HttpExceptionFilter } from 'src/shared/http-exception/filter';
+import { HttpExceptionFilter } from '../../shared/http-exception/filter';
 import { AppointmentService } from './appointment.service';
 import { Appointment } from './entitys/appointment.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';

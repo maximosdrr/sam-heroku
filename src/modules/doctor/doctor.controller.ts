@@ -12,7 +12,7 @@ import {
 import { DoctorService } from './doctor.service';
 import { Doctor } from './entitys/doctor.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { HttpExceptionFilter } from 'src/shared/http-exception/filter';
+import { HttpExceptionFilter } from '../../shared/http-exception/filter';
 
 @Controller('doctor')
 @UseGuards(JwtAuthGuard)

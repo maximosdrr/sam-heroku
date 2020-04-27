@@ -13,7 +13,7 @@ export class PatientTests {
   createPatientUsingValidData(validAuthToken: string) {
     const patient: object = {
       name: 'Any patient name',
-      birthday: '01/01/1970',
+      birthday: '2020-04-25 12:59:54',
       healthInsurance: 'Any health insurance',
       telephone: (Math.random() * 1000000000).toString(),
     };
@@ -33,7 +33,7 @@ export class PatientTests {
 
   createPatientUsingMissingData(validAuthToken: string) {
     const patient: object = {
-      birthday: '01/01/1970',
+      birthday: '2020-04-25 12:59:54',
       healthInsurance: 'Any health insurance',
     };
 
@@ -43,9 +43,9 @@ export class PatientTests {
   deletePatientUsingValidId(validAuthToken: string) {
     const patient = {
       name: 'Any',
-      birthday: 'Any',
+      birthday: '2020-04-25 12:59:54',
       healthInsurance: 'Any',
-      telephone: 'Any',
+      telephone: (Math.random() * 1000000000).toString(),
     };
     return this.common.validDelete(validAuthToken, patient);
   }
@@ -61,7 +61,7 @@ export class PatientTests {
   validFindPatientById(validAuthToken: string) {
     const patient = {
       name: 'Patient to find',
-      birthday: 'Patient to find',
+      birthday: '2020-04-25 12:59:54',
       healthInsurance: 'Patient to find',
       telephone: Math.random().toString(),
     };
@@ -79,14 +79,14 @@ export class PatientTests {
   validUpdatePatient(validAuthToken: string) {
     const patient = {
       name: 'Patient updated',
-      birthday: 'Patient updated',
+      birthday: '2020-04-25 12:59:54',
       healthInsurance: 'Patient updated',
       telephone: Math.random().toString(),
     };
 
     const patientToUpdate = {
       name: 'Patient to find',
-      birthday: 'Patient to find',
+      birthday: '2020-04-25 12:59:54',
       healthInsurance: 'Patient to find',
       telephone: Math.random().toString(),
     };
@@ -98,7 +98,7 @@ export class PatientTests {
     const patient = {
       id: 'Some invalid id',
       name: 'Patient updated',
-      birthday: 'Patient updated',
+      birthday: '2020-04-25 12:59:54',
       healthInsurance: 'Patient updated',
       telephone: Math.random().toString(),
     };

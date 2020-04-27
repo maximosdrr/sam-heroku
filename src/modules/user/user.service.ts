@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entitys/user.entity';
 import { Repository, DeleteResult } from 'typeorm';
 import { LoginInterface } from '../../shared/interfaces/login.interface';
-import { UpdateUserData } from './interfaces/user-update-data.interface';
 
 @Injectable()
 export class UserService {
@@ -18,14 +17,22 @@ export class UserService {
   }
 
   async login(loginData: LoginInterface): Promise<User> {
-    const user: User = await this.userRepository.findOne({
-      where: { username: loginData.username, password: loginData.password },
-    });
+    const user: User = await this.userRepository
+      .findOne({
+        where: { username: loginData.username, password: loginData.password },
+      })
+      .catch(erro => {
+        throw new HttpException(erro, HttpStatus.BAD_REQUEST);
+      });
     return user;
   }
 
-  async update(user: UpdateUserData): Promise<User> {
-    const userToUpdate: User = await this.userRepository.findOne(user.id);
+  async update(user): Promise<User> {
+    const userToUpdate: User = await this.userRepository
+      .findOne(user.id)
+      .catch(erro => {
+        throw new HttpException(erro, HttpStatus.BAD_REQUEST);
+      });
     if (!userToUpdate)
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     user.name = user.name;
@@ -36,6 +43,38 @@ export class UserService {
     return await this.userRepository.delete(id).catch(erro => {
       throw new HttpException(erro, HttpStatus.BAD_REQUEST);
     });
+  }
+
+  async changePassword(
+    id: string,
+    oldPassword: string,
+    newPassword: string,
+  ): Promise<User> {
+    const user: User = await this.userRepository
+      .findOne(id, { where: { password: oldPassword } })
+      .catch(erro => {
+        throw new HttpException(erro, HttpStatus.BAD_REQUEST);
+      });
+
+    if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+
+    user.password = newPassword;
+
+    return this.userRepository.save(user).catch(erro => {
+      throw new HttpException(erro, HttpStatus.BAD_REQUEST);
+    });
+  }
+
+  async changeEmail(id: string, email: string): Promise<User> {
+    const user: User = await this.userRepository.findOne(id).catch(erro => {
+      throw new HttpException(erro, HttpStatus.BAD_REQUEST);
+    });
+
+    if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+
+    user.email = email;
+    user.isChecked = false;
+    return this.userRepository.save(user);
   }
   // async updateUser();
 }

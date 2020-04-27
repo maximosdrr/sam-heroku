@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { type } from 'os';
-import { Appointment } from 'src/modules/appointment/entitys/appointment.entity';
+import { Appointment } from '../../appointment/entitys/appointment.entity';
 
 @Entity()
 export class Doctor {

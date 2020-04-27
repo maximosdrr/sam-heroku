@@ -13,7 +13,7 @@ import { PatientService } from './patient.service';
 import { Patient } from './entitys/patient.entity';
 import { InsertResult, DeleteResult } from 'typeorm';
 import { MedicalRecord } from './entitys/medical-record.entity';
-import { HttpExceptionFilter } from 'src/shared/http-exception/filter';
+import { HttpExceptionFilter } from '../../shared/http-exception/filter';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('patient')

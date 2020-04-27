@@ -89,7 +89,7 @@ export class AppointmentService {
       .findOne({
         join: {
           alias: 'appointment',
-          innerJoinAndSelect: {
+          leftJoinAndSelect: {
             doctor: 'appointment.doctor',
             patient: 'appointment.patient',
           },

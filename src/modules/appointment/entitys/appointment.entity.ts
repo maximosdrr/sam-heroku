@@ -2,14 +2,12 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToOne,
-  OneToMany,
   JoinColumn,
   ManyToOne,
 } from 'typeorm';
-import { Patient } from 'src/modules/patient/entitys/patient.entity';
-import { Doctor } from 'src/modules/doctor/entitys/doctor.entity';
-import { User } from 'src/modules/user/entitys/user.entity';
+import { Patient } from '../../patient/entitys/patient.entity';
+import { Doctor } from '../../doctor/entitys/doctor.entity';
+import { User } from '../../user/entitys/user.entity';
 
 @Entity()
 export class Appointment {

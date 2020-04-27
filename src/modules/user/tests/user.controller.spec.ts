@@ -5,6 +5,8 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Controller } from '@nestjs/common/interfaces';
 import { UserController } from '../user.controller';
+import { Appointment } from '../../appointment/entitys/appointment.entity';
+import { AppointmentService } from '../../appointment/appointment.service';
 
 describe('User Controller', () => {
   let controller: Controller;
@@ -13,7 +15,9 @@ describe('User Controller', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UserService,
+        AppointmentService,
         { provide: getRepositoryToken(User), useClass: Repository },
+        { provide: getRepositoryToken(Appointment), useClass: Repository },
       ],
       controllers: [UserController],
     }).compile();

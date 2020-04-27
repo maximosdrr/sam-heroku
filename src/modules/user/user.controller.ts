@@ -11,11 +11,9 @@ import {
 import { UserService } from './user.service';
 import { User } from './entitys/user.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import {
-  UpdateUserData,
-  UserUpdatedResponse,
-} from './interfaces/user-update-data.interface';
+
 import { HttpExceptionFilter } from '../../shared/http-exception/filter';
+import { DeleteResult } from 'typeorm';
 
 @Controller('user')
 @UseFilters(HttpExceptionFilter)
@@ -29,10 +27,10 @@ export class UserController {
 
   @Put('update')
   @UseGuards(JwtAuthGuard)
-  async update(@Body() user: UpdateUserData, @Request() req): Promise<any> {
+  async update(@Body() user, @Request() req): Promise<any> {
     user.id = req.user.id;
     const updatedUser: User = await this.userService.update(user);
-    const updatedUserResponse: UserUpdatedResponse = {
+    const updatedUserResponse = {
       id: updatedUser.id,
       email: updatedUser.email,
       name: updatedUser.name,
@@ -44,8 +42,35 @@ export class UserController {
 
   @Delete('delete')
   @UseGuards(JwtAuthGuard)
-  async delete(@Request() req): Promise<any> {
+  async delete(@Request() req): Promise<DeleteResult> {
     const { id } = req.user;
     return this.userService.delete(id);
+  }
+
+  @Put('changePassword')
+  @UseGuards(JwtAuthGuard)
+  async changePassword(@Request() req, @Body() data): Promise<any> {
+    const { id } = req.user;
+    const user: User = await this.userService.changePassword(
+      id,
+      data.oldPassword,
+      data.newPassword,
+    );
+    return {
+      user: user.username,
+      email: user.email,
+      status: 'Password changed',
+    };
+  }
+  @Put('changeEmail')
+  @UseGuards(JwtAuthGuard)
+  async changeEmail(@Request() req, @Body() data): Promise<any> {
+    const { id } = req.user;
+    const user: User = await this.userService.changeEmail(id, data.email);
+    return {
+      user: user.username,
+      email: user.email,
+      status: 'Email changed',
+    };
   }
 }
