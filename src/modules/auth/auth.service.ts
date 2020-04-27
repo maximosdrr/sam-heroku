@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { LoginInterface } from '../../shared/interfaces/login.interface';
 import { JwtService } from '@nestjs/jwt';
@@ -14,8 +14,14 @@ export class AuthService {
 
   async validateUser(loginData: LoginInterface): Promise<any> {
     const user = await this.userService.login(loginData);
-    if (user) return user;
-    return null;
+    if (!user) return null;
+    if (!user.isChecked)
+      throw new HttpException(
+        'Please confirm your email before',
+        HttpStatus.UNAUTHORIZED,
+      );
+
+    return user;
   }
 
   async login(user: User): Promise<object> {
