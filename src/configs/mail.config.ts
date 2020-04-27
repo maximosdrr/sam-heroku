@@ -9,12 +9,12 @@ export const config = {
       ignoreTLS: true,
       secure: true,
       auth: {
-        user: 'hephaestus.sam.mailer@gmail.com',
-        pass: 'jH62mg21-dr',
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASSWORD,
       },
     },
     defaults: {
-      from: 'hephaestus.sam.mailer@gmail.com',
+      from: process.env.MAIL_SENDER,
     },
     preview: false,
     template: {

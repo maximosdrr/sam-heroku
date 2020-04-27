@@ -17,6 +17,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { HttpExceptionFilter } from '../../shared/http-exception/filter';
 import { DeleteResult, InsertResult } from 'typeorm';
 import { MailService } from '../../mail/mail.service';
+import { generateSucessConfirmationPage } from 'src/shared/html/confirmation.page';
 
 @Controller('user')
 @UseFilters(HttpExceptionFilter)
@@ -33,6 +34,7 @@ export class UserController {
     const mailResult = await this.mailService.sendConfirmationEmail(
       user.email,
       userId,
+      user.name,
     );
 
     return { insertResult, ...mailResult };
@@ -91,6 +93,11 @@ export class UserController {
   async confirmationEmail(@Query('id') id: string) {
     const user: User = await this.userService.confirmationEmail(id);
 
-    return `<h1>Obrigado: ${user.name} seu email foi confirmado com sucesso</h1>`;
+    return generateSucessConfirmationPage(
+      user.name,
+      process.env.SAM_HOME,
+      process.env.HEPHAESTHUS_SITE,
+      process.env.HEPHAESTHUS_LOGO,
+    );
   }
 }

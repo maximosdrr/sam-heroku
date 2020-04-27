@@ -24,8 +24,9 @@ export class MailService {
   async sendConfirmationEmail(
     destination: string,
     id: string,
+    username: string,
   ): Promise<object> {
-    const email: MailInterface = confirmationEmail(destination, id);
+    const email: MailInterface = confirmationEmail(destination, id, username);
     return await this.mailerService.sendMail(email).catch(erro => {
       throw new HttpException(erro, HttpStatus.BAD_REQUEST);
     });
