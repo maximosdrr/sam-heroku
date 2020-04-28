@@ -16,7 +16,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 import { HttpExceptionFilter } from '../../shared/http-exception/filter';
 import { DeleteResult, InsertResult } from 'typeorm';
-import { MailService } from '../../mail/mail.service';
+import { MailService } from '../mail/mail.service';
 import { generateSucessConfirmationPage } from 'src/shared/html/confirmation.page';
 
 @Controller('user')
@@ -82,10 +82,16 @@ export class UserController {
   async changeEmail(@Request() req, @Body() data): Promise<any> {
     const { id } = req.user;
     const user: User = await this.userService.changeEmail(id, data.email);
+    const mailResult = await this.mailService.sendConfirmationEmail(
+      user.email,
+      user.id,
+      user.name,
+    );
     return {
       user: user.username,
       email: user.email,
       status: 'Email changed',
+      ...mailResult,
     };
   }
 

@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { User } from './entitys/user.entity';
-import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
-import { MailService } from 'src/mail/mail.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { MailService } from 'src/modules/mail/mail.service';
 
 @Module({
   providers: [UserService, MailService],
