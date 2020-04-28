@@ -20,7 +20,6 @@ export class Appointment {
   @Column({
     type: 'longtext',
     nullable: true,
-    default: 'No description provided',
   })
   description: string;
 

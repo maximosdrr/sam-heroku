@@ -13,6 +13,6 @@ export class MedicalRecord {
   )
   patient: Patient;
 
-  @Column({ type: 'longtext', default: 'Sem dados até o momento' })
+  @Column({ type: 'longtext' })
   description: string;
 }
