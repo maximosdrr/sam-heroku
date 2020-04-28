@@ -23,7 +23,8 @@ export const userHelp = () => {
       route: 'user/update',
       auth: true,
       example: {
-        username: { type: 'string', required: false },
+        id: { type: 'string', required: true },
+        name: { type: 'string', required: false },
       },
     },
 
