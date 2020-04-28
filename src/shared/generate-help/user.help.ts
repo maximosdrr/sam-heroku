@@ -28,7 +28,7 @@ export const userHelp = () => {
     },
 
     delete: {
-      route: 'user/delete',
+      route: 'user/delete/?id=Userid',
       auth: true,
       example: {
         undefined: 'Body is not necessary in this request',
