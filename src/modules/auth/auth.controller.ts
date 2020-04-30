@@ -18,4 +18,10 @@ export class AuthController {
   getUser(@Request() req) {
     return req.user;
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('verifyToken')
+  verifyToken(@Request() req) {
+    return { auth: true, user: req.user };
+  }
 }
