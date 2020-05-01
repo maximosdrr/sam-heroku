@@ -108,7 +108,8 @@ export class UserController {
   }
 
   @Get('getProfile')
-  async getProfile(@Request() req) {
+  @UseGuards(JwtAuthGuard)
+  async getProfile(@Request() req): Promise<object> {
     const { id } = req.user;
     return this.userService.getProfile(id);
   }
