@@ -89,5 +89,13 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
+  async getProfile(id: string): Promise<object> {
+    const user: User = await this.userRepository.findOne(id).catch(erro => {
+      throw new HttpException(erro, HttpStatus.BAD_REQUEST);
+    });
+
+    return { email: user.email, name: user.name };
+  }
+
   // async updateUser();
 }

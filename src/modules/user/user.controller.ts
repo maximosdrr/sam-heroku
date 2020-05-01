@@ -106,4 +106,10 @@ export class UserController {
       process.env.HEPHAESTHUS_LOGO,
     );
   }
+
+  @Get('getProfile')
+  async getProfile(@Request() req) {
+    const { id } = req.user;
+    return this.userService.getProfile(id);
+  }
 }

@@ -54,6 +54,14 @@ export const userHelp = () => {
         email: { type: 'string', required: true },
       },
     },
+
+    getProfile: {
+      route: 'user/getProfile',
+      auth: true,
+      example: {
+        undefined: 'Body is not necessary in this request',
+      },
+    },
   };
 
   return userRoutes;
