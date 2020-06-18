@@ -70,4 +70,9 @@ export class PatientController {
   ): Promise<MedicalRecord> {
     return this.patientService.updateMedicalRecord(medicalRecord);
   }
+
+  @Get('total')
+  total() {
+    return this.patientService.getNumberOfPatients();
+  }
 }
