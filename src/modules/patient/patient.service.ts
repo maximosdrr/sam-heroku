@@ -59,9 +59,7 @@ export class PatientService {
       .find({
         take,
         skip,
-        order: {
-          name,
-        },
+
         join: {
           alias: 'patient',
           leftJoinAndSelect: {
