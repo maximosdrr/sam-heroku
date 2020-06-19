@@ -19,6 +19,12 @@ export class Patient {
   @Column({ nullable: false })
   birthday: Date;
 
+  @Column({ nullable: false })
+  sex: boolean;
+
+  @Column({ nullable: false })
+  address: string;
+
   @OneToMany(
     type => MedicalRecord,
     hi => hi.patient,

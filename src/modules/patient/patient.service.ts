@@ -13,7 +13,7 @@ export class PatientService {
   ) {}
 
   async insertPatient(patient: Patient): Promise<InsertResult> {
-    return await this.patientRepository.insert(patient).catch((erro) => {
+    return await this.patientRepository.insert(patient).catch(erro => {
       throw new HttpException(erro, HttpStatus.BAD_REQUEST);
     });
   }
@@ -23,7 +23,7 @@ export class PatientService {
   ): Promise<InsertResult> {
     return await this.medicalRecordRepository
       .insert(medicalRecord)
-      .catch((erro) => {
+      .catch(erro => {
         throw new HttpException(erro, HttpStatus.BAD_REQUEST);
       });
   }
@@ -39,7 +39,7 @@ export class PatientService {
           },
         },
       })
-      .catch((erro) => {
+      .catch(erro => {
         throw new HttpException(erro, HttpStatus.BAD_REQUEST);
       });
 
@@ -49,16 +49,19 @@ export class PatientService {
     return patient;
   }
 
-  async findAllPatients(limit: number, page: number): Promise<Patient[]> {
-    if (!limit || !page)
+  async findAllPatients(take: number, skip: number): Promise<Patient[]> {
+    if (!take || !skip)
       throw new HttpException(
         'Limit or index undefined',
         HttpStatus.BAD_REQUEST,
       );
     return this.patientRepository
       .find({
-        take: limit,
-        skip: page,
+        take,
+        skip,
+        order: {
+          name,
+        },
         join: {
           alias: 'patient',
           leftJoinAndSelect: {
@@ -67,19 +70,19 @@ export class PatientService {
           },
         },
       })
-      .catch((erro) => {
+      .catch(erro => {
         throw new HttpException(erro, HttpStatus.BAD_REQUEST);
       });
   }
 
   async deletePatient(id: string): Promise<DeleteResult> {
-    return await this.patientRepository.delete(id).catch((erro) => {
+    return await this.patientRepository.delete(id).catch(erro => {
       throw new HttpException(erro, HttpStatus.BAD_REQUEST);
     });
   }
 
   async deleteMedicalRecord(id: string): Promise<DeleteResult> {
-    return await this.medicalRecordRepository.delete(id).catch((erro) => {
+    return await this.medicalRecordRepository.delete(id).catch(erro => {
       throw new HttpException(erro, HttpStatus.BAD_REQUEST);
     });
   }
@@ -87,7 +90,7 @@ export class PatientService {
   async updatePatient(patient: Patient): Promise<Patient> {
     const patientToUpdate: Patient = await this.patientRepository
       .findOne(patient.id)
-      .catch((erro) => {
+      .catch(erro => {
         throw new HttpException(erro, HttpStatus.BAD_REQUEST);
       });
 
@@ -100,7 +103,7 @@ export class PatientService {
     patientToUpdate.medicalRecord = patient.medicalRecord;
     patientToUpdate.telephone = patient.telephone;
 
-    return this.patientRepository.save(patientToUpdate).catch((erro) => {
+    return this.patientRepository.save(patientToUpdate).catch(erro => {
       throw new HttpException(erro, HttpStatus.BAD_REQUEST);
     });
   }
@@ -110,13 +113,13 @@ export class PatientService {
   ): Promise<MedicalRecord> {
     const patient: Patient = await this.patientRepository
       .findOne(medicalRecord.patient)
-      .catch((erro) => {
+      .catch(erro => {
         throw new HttpException(erro, HttpStatus.BAD_REQUEST);
       });
 
     const medicalRecordToUpdate: MedicalRecord = await this.medicalRecordRepository
       .findOne(medicalRecord.id)
-      .catch((erro) => {
+      .catch(erro => {
         throw new HttpException(erro, HttpStatus.BAD_REQUEST);
       });
 
@@ -131,7 +134,7 @@ export class PatientService {
 
     return this.medicalRecordRepository
       .save(medicalRecordToUpdate)
-      .catch((erro) => {
+      .catch(erro => {
         throw new HttpException(erro, HttpStatus.BAD_REQUEST);
       });
   }
@@ -150,7 +153,7 @@ export class PatientService {
           name: name,
         },
       })
-      .catch((erro) => {
+      .catch(erro => {
         throw new HttpException(erro, HttpStatus.BAD_REQUEST);
       });
 
@@ -161,7 +164,7 @@ export class PatientService {
   }
 
   async getNumberOfPatients() {
-    const result = await this.patientRepository.find().catch((erro) => {
+    const result = await this.patientRepository.find().catch(erro => {
       throw new HttpException(erro, HttpStatus.BAD_REQUEST);
     });
 
