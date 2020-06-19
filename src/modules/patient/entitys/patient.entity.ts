@@ -19,10 +19,10 @@ export class Patient {
   @Column({ nullable: false })
   birthday: Date;
 
-  @Column({ nullable: false })
+  @Column()
   sex: boolean;
 
-  @Column({ nullable: false })
+  @Column()
   address: string;
 
   @OneToMany(
