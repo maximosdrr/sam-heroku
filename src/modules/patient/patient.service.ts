@@ -50,27 +50,37 @@ export class PatientService {
   }
 
   async findAllPatients(take: number, skip: number): Promise<Patient[]> {
+    const calc = take + skip;
     if (!take || !skip)
       throw new HttpException(
         'Limit or index undefined',
         HttpStatus.BAD_REQUEST,
       );
-    return this.patientRepository
-      .find({
-        take,
-        skip,
+    return (
+      this.patientRepository
+        // .createQueryBuilder('patient')
+        // .orderBy({ name: 'ASC' })
+        // .offset(skip * take)
+        // .limit(take)
+        // .leftJoinAndSelect('patient.medicalRecord', 'm')
+        // .getMany()
 
-        join: {
-          alias: 'patient',
-          leftJoinAndSelect: {
-            medicalRecord: 'patient.medicalRecord',
-            appointment: 'patient.appointment',
+        .find({
+          take,
+          skip: take * skip,
+          order: { name: 'ASC' },
+          join: {
+            alias: 'patient',
+            leftJoinAndSelect: {
+              medicalRecord: 'patient.medicalRecord',
+              appointment: 'patient.appointment',
+            },
           },
-        },
-      })
-      .catch(erro => {
-        throw new HttpException(erro, HttpStatus.BAD_REQUEST);
-      });
+        })
+        .catch(erro => {
+          throw new HttpException(erro, HttpStatus.BAD_REQUEST);
+        })
+    );
   }
 
   async deletePatient(id: string): Promise<DeleteResult> {
