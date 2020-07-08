@@ -75,4 +75,9 @@ export class PatientController {
   total() {
     return this.patientService.getNumberOfPatients();
   }
+
+  @Post('findPatientLikeName')
+  findPatientLikeName(@Body() body) {
+    return this.patientService.findPatientLikeName(body.name);
+  }
 }
