@@ -55,6 +55,22 @@ export const patientHelp = () => {
       },
     },
 
+    findPatientByLike: {
+      route: 'patient/findPatientLikeName',
+      auth: true,
+      example: {
+        name: 'Patient name',
+      },
+    },
+
+    total: {
+      route: 'patient/total',
+      auth: true,
+      example: {
+        undefined: 'Body is not necessary in this request',
+      },
+    },
+
     createMedicalRecord: {
       route: '/patient/medical-record/insert',
       auth: true,
