@@ -33,7 +33,7 @@
     "@nestjs/typeorm": "^7.0.0",
     "handlebars": "^4.7.6",
     "mysql": "^2.18.1",
-    "nodemailer": "^6.4.6",
+    "nodemailer": "^6.4.16",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
